@@ -1,8 +1,9 @@
 import Orden from './Orden.js'
 
+// Solución temporal:
+const ordenes = [];
+
 class Servicio {
-  ordenes = [];
-  
   constructor() {
     this.ordenes = []
     this.newOrder()
@@ -11,31 +12,34 @@ class Servicio {
     this.eliminar
   }
 
-  async newOrder() {
-    if ( typeof this.ordenes == "undefined" )
-      return;
+  newOrder() {
+    this.cuenta = this.ordenes.length;
+    let nuevaOrden = new Orden(this.cuenta);
+    ordenes.push( nuevaOrden );
+    this.ordenes = ordenes;
 
-    this.cuenta = this.ordenes.length
-    let nuevaOrden = await new Orden(this.cuenta)
-    this.ordenes.push(nuevaOrden)
+    // Mostrar las órdenes actuales:
+    console.clear();
+    console.log( this.ordenes );
   }
 
-  eliminar(cuenta) {
-
-    if ( typeof this.ordenes == "undefined" )
-      return;
+  eliminar( cuenta ) {
+    this.ordenes = ordenes;
 
     /*   debugger */
     let elimina = cuenta - 1
-    console.log(this.ordenes)
     this.ordenes.splice(elimina, 1)
 
-    this.ordenes.forEach(function (o) {
-      if (o.cuenta > cuenta) {
-        o.cuenta -= 1
-        o.elegir.id = `elegir${o.cuenta}`
+    for ( let orden of this.ordenes ) {
+      if ( orden.cuenta > cuenta ) {
+        orden.cuenta -= 1;
+        orden.elegir.id = `elegir${orden.cuenta}`;
       }
-    })
+    }
+
+    // Mostrar la cantidad actual de órdenes:
+    console.clear();
+    console.log( this.ordenes );
   }
 
   splice() {
